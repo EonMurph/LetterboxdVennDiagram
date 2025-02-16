@@ -1,7 +1,9 @@
+from typing import Optional
+
 from csv import writer as csv_writer
 
 
-def save_to_csv(movies: dict[str, list[str]], filename: str):
+def save_to_csv(movies: list[list[Optional[str]]], filename: str):
     with open(filename, 'w', newline='') as out_file:
         writer = csv_writer(out_file)
         writer.writerow(['Name', 'Year', 'URL'])

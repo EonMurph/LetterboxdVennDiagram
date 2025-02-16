@@ -20,7 +20,7 @@ def main() -> None:
         return
 
     movies = parse_watchlist(watchlist)
-    save_to_csv(movies, 'movies.csv')
+    save_to_csv(movies, f'{username}.csv')
 
 
 if __name__ == '__main__':
