@@ -6,6 +6,7 @@ from requests import Response, exceptions, get
 
 
 def get_watchlist(username: str) -> list[Tag]:
+    print(f"Getting {username}'s watchlist...")
     watchlist: list[Tag] = []
     URL = f'https://letterboxd.com/{username}/watchlist/'
     try:
@@ -15,7 +16,7 @@ def get_watchlist(username: str) -> list[Tag]:
         pages: Tag = soup.find('div', {'class': 'paginate-pages'})
         num_pages: int = int(pages.find_all('a')[-1].text)
         for i in range(1, num_pages + 1):
-            print(i)
+            print(f'Page: {i}')
             URL = f'https://letterboxd.com/{username}/watchlist/page/{i}'
             response = get(URL)
             response.raise_for_status()
@@ -35,7 +36,7 @@ def get_watchlist(username: str) -> list[Tag]:
 
 def parse_watchlist(watchlist: list[Tag]) -> list[list[Optional[str]]]:
     movies: list[list[Optional[str]]] = []
-    print(len(watchlist))
+    print(f'Number of movies: {len(watchlist)}')
     for movie in watchlist:
         movie = movie.find('div')
         movie_title: str = movie['data-film-slug']
