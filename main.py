@@ -12,15 +12,28 @@ from handle_csv import save_to_csv
 def main() -> None:
     load_dotenv()
     usernames = getenv('USERNAMES')
-    if usernames is not None:
-        username = json_loads(usernames)[0]
-
-    watchlist: Optional[ResultSet[Tag]] = get_watchlist(username)
-    if watchlist is None:
+    if usernames is None:
+        return
+    usernames = json_loads(usernames)
+    if usernames is None:
         return
 
-    movies = parse_watchlist(watchlist)
-    save_to_csv(movies, f'{username}.csv')
+    total_movies = {}
+    for i in range(len(usernames)):
+        username = usernames[i]
+        watchlist: Optional[ResultSet[Tag]] = get_watchlist(username)
+        if watchlist is None:
+            return
+
+        movies = parse_watchlist(watchlist)
+        total_movies[i] = movies
+
+    intersection_movies = list(
+        movie
+        for movie in total_movies[0]
+        if all(movie in total_movies[i] for i in range(1, len(total_movies)))
+    )
+    save_to_csv(intersection_movies, 'movies.csv')
 
 
 if __name__ == '__main__':
