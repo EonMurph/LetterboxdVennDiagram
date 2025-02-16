@@ -6,6 +6,7 @@ from bs4 import ResultSet, Tag
 from dotenv import load_dotenv
 
 from HTML_rqs_resps import get_watchlist, parse_watchlist
+from handle_csv import save_to_csv
 
 
 def main() -> None:
@@ -18,7 +19,8 @@ def main() -> None:
     if watchlist is None:
         return
 
-    parse_watchlist(watchlist)
+    movies = parse_watchlist(watchlist)
+    save_to_csv(movies, 'movies.csv')
 
 
 if __name__ == '__main__':
